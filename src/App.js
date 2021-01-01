@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import './App.scss';
 import ColorBox from './components/ColorBox';
+import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
+
 
 const todoList = [
   { id: 1, title: 'I love Easy Frontend! 😍 ' },
@@ -21,9 +23,26 @@ function App() {
     newTodos.splice(index, 1)
     setTodos(newTodos)
   }
+
+  function handleFormSubmit(value) {
+    const newTodos = [...todos]
+    const todo = {
+      ...value, 
+      id: newTodos.length + 2
+    }
+    newTodos.push(todo)
+
+    setTodos(newTodos)
+  }
+
+
   return (
     <div className="app">
-      <TodoList todos = {todos} onTodoClick = {handleTodoClick}/>
+      <TodoForm onSubmit = {handleFormSubmit}/>
+      <TodoList 
+        todos = {todos} 
+        onTodoClick = {handleTodoClick}
+      />
     </div>
     
   );
