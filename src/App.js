@@ -7,6 +7,7 @@ import Pagination from './components/Pagination';
 import PostList from './components/PostList';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
+import PostFiltersForm from './components/PostFiltersForm';
 
 
 const todoList = [
@@ -23,7 +24,8 @@ function App() {
   const [pagination, setPagination] = useState({})
   const [filters, setFilters] = useState({
     _limit: 10,
-    _page: 1
+    _page: 1,
+    title_like: ''
   })
 
 
@@ -42,7 +44,9 @@ function App() {
         console.log(responseJSON);
         const { data, pagination } = responseJSON
         setPosts(data)
-        setPagination(pagination)    
+        setPagination(pagination)   
+        
+
 
       } catch (error) {
         console.log("Fail", error);
@@ -80,6 +84,18 @@ function App() {
     setFilters({...filters, _page: newPage})
   }
 
+  function handleFilterChange(values) {
+    console.log(values);
+    setFilters(
+      {
+        ...filters,
+        _page: 1,
+        title_like: values.q
+      }
+      )
+
+  }
+
 
   return (
     <div className="app">
@@ -88,6 +104,7 @@ function App() {
         todos = {todos} 
         onTodoClick = {handleTodoClick}
       /> */}
+      <PostFiltersForm onSubmit = {handleFilterChange}/>
       <PostList posts = {posts}/>
       <Pagination pagination = {pagination} onPageChange ={hanlePageChange}/>
     </div>
