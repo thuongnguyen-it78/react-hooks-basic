@@ -8,6 +8,7 @@ import PostList from './components/PostList';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import PostFiltersForm from './components/PostFiltersForm';
+import Clock from './components/Clock';
 
 
 const todoList = [
@@ -27,6 +28,8 @@ function App() {
     _page: 1,
     title_like: ''
   })
+
+  const [showClock, setShowClock] = useState(true)
 
 
 
@@ -99,6 +102,10 @@ function App() {
 
   return (
     <div className="app">
+      {showClock && <Clock/>}
+      <button onClick = {() => {setShowClock(!showClock)}}>
+        Hide Clock
+      </button>
       {/* <TodoForm onSubmit = {handleFormSubmit}/> */}
       {/* <TodoList 
         todos = {todos} 
