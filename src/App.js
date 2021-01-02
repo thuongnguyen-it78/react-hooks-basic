@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
+import queryString from 'query-string'
+
 import './App.scss';
 import ColorBox from './components/ColorBox';
+import Pagination from './components/Pagination';
 import PostList from './components/PostList';
 import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
@@ -17,19 +20,38 @@ const todoList = [
 function App() {
   const [todos, setTodos] = useState(todoList)
   const [posts, setPosts] = useState([])
+  const [pagination, setPagination] = useState({})
+  const [filters, setFilters] = useState({
+    _limit: 10,
+    _page: 1
+  })
 
-  // look like componentDidMount
+
+
+  // look like componentDidMount if []
   useEffect(() => {
     async function fetchPostList() {
-      const requestUrl = 'http://js-post-api.herokuapp.com/api/posts?_limit=10&_page=1';
-      const response = await fetch(requestUrl)
-      const responseJSON = await response.json()
-      console.log(responseJSON);
-  
-      setPosts(responseJSON.data)
+
+      try {
+        // _limit=10&_page=1
+        const paramsString = queryString.stringify(filters)
+
+        const requestUrl = `http://js-post-api.herokuapp.com/api/posts?${paramsString}`;
+        const response = await fetch(requestUrl)
+        const responseJSON = await response.json()
+        console.log(responseJSON);
+        const { data, pagination } = responseJSON
+        setPosts(data)
+        setPagination(pagination)    
+
+      } catch (error) {
+        console.log("Fail", error);
+      }
+
     }
     fetchPostList()
-    }, [])
+    console.log("aye1");
+    }, [filters])
   // look like componentDidUpdate and componendDidMount
   useEffect(() => {
     console.log("aye")
@@ -54,9 +76,9 @@ function App() {
     setTodos(newTodos)
   }
 
-
-
-
+  function hanlePageChange(newPage) {
+    setFilters({...filters, _page: newPage})
+  }
 
 
   return (
@@ -67,6 +89,7 @@ function App() {
         onTodoClick = {handleTodoClick}
       /> */}
       <PostList posts = {posts}/>
+      <Pagination pagination = {pagination} onPageChange ={hanlePageChange}/>
     </div>
     
   );
