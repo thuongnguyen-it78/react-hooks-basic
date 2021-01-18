@@ -14,7 +14,8 @@ function randomeColor() {
 }
 
 function ColorBox() {
-
+    // nếu bỏ ở trên thì mỗi lần render component thì nó sẽ lại phải chạy lấy ra
+    // color, mặc dù ta không sử dụng.
     const [color, setColor] = useState(() => {
         const initColor = localStorage.getItem('color')
         return initColor
@@ -40,3 +41,4 @@ function ColorBox() {
 }
 
 export default ColorBox;
+

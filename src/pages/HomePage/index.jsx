@@ -60,6 +60,7 @@ function HomePage() {
     console.log("aye1");
     }, [filters])
   // look like componentDidUpdate and componendDidMount
+  // sau khi component render lần đầu. thì nó sẽ gọi hàm này và mỗi khi update nó cũng sẽ gọi hàm này.
   useEffect(() => {
     console.log("aye")
   })
